@@ -1,5 +1,5 @@
 import model.enums.TaskStatus;
-import taskmanager.TaskManager;
+import manager.TaskManager;
 import model.Task;
 import model.Epic;
 import model.SubTask;
@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        TaskManager manager = new taskmanager.TaskManager();
+        TaskManager manager = new manager.TaskManager();
         Task task1 = new Task("Сходить в магазин", "купить много продуктов");
         Task task2 = new Task("Помыть кота", "приготовить набор первой помощи");
         task1.setStatus(TaskStatus.NEW);
