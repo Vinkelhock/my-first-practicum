@@ -1,6 +1,6 @@
 package model;
 
-import enums.TaskStatus;
+import model.enums.TaskStatus;
 
 import java.util.Objects;
 

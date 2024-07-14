@@ -1,9 +1,9 @@
-package controller;
+package taskmanager;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import enums.TaskStatus;
+import model.enums.TaskStatus;
 import model.Task;
 import model.Epic;
 import model.SubTask;
@@ -53,12 +53,12 @@ public class TaskManager {
         }
     }
 
-    //Получение по задачи по идентификатору.
+    //Получение задачи по идентификатору.
     public Task getTaskById(int id) {
         return tasks.get(id);
     }
 
-    //Получение по эпика по идентификатору.
+    //Получение эпика по идентификатору.
     public Epic getEpicById(int id) {
         return epics.get(id);
     }
@@ -75,10 +75,11 @@ public class TaskManager {
     }
 
     //Создание задачи Epic
-    public void add(Epic epic) {
+    public Epic add(Epic epic) {
         epic.setId(generateId());
         epics.put(epic.getId(), epic);
-        checkStatus(epic);
+        Epic newEpic = checkStatus(epic);
+        return newEpic;
     }
 
     //Создание подзадачи
@@ -103,7 +104,7 @@ public class TaskManager {
     //Обновление подзадачи
     public void updateSubtask(int id, SubTask subtask) {
         subtasks.put(id, subtask);
-        checkStatus(epics.get(subtask.getEpicId()));
+        Epic newEpic = checkStatus(epics.get(subtask.getEpicId()));
     }
 
     //Удаление по идентификатору задачи Task
@@ -140,7 +141,7 @@ public class TaskManager {
         return listOfSubtasks;
     }
 
-    private void checkStatus(Epic epic) {
+    private Epic checkStatus(Epic epic) {
         boolean checkNew = true;
         boolean checkDone = true;
         for (Integer id : epic.getListOfSubtask()) {
@@ -155,24 +156,29 @@ public class TaskManager {
                 break;
             }
         }
+
         if (epic.getListOfSubtask().isEmpty() || checkNew) {
             if (epic.getStatus() != (TaskStatus.NEW)) {
                 Epic newEpic = new Epic(epic.getTitle(), epic.getDescription(), epic.getId(), TaskStatus.NEW,
                         epic.getListOfSubtask());
                 updateEpic(epic.getId(), newEpic);
+                return newEpic;
             }
         } else if (checkDone) {
             if (epic.getStatus() != (TaskStatus.DONE)) {
                 Epic newEpic = new Epic(epic.getTitle(), epic.getDescription(), epic.getId(), TaskStatus.DONE,
                         epic.getListOfSubtask());
                 updateEpic(epic.getId(), newEpic);
+                return newEpic;
             }
         } else {
             if (epic.getStatus() != (TaskStatus.IN_PROGRESS)) {
                 Epic newEpic = new Epic(epic.getTitle(), epic.getDescription(), epic.getId(), TaskStatus.IN_PROGRESS,
                         epic.getListOfSubtask());
                 updateEpic(epic.getId(), newEpic);
+                return newEpic;
             }
         }
+        return epic;
     }
 }

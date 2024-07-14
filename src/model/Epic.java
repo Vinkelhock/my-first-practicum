@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import enums.TaskStatus;
+import model.enums.TaskStatus;
 
 public class Epic extends Task {
     private ArrayList<Integer> listOfSubtask;

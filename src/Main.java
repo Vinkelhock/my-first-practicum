@@ -1,16 +1,14 @@
-import enums.TaskStatus;
-import controller.TaskManager;
+import model.enums.TaskStatus;
+import taskmanager.TaskManager;
 import model.Task;
 import model.Epic;
 import model.SubTask;
-
-import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        TaskManager manager = new controller.TaskManager();
+        TaskManager manager = new taskmanager.TaskManager();
         Task task1 = new Task("Сходить в магазин", "купить много продуктов");
         Task task2 = new Task("Помыть кота", "приготовить набор первой помощи");
         task1.setStatus(TaskStatus.NEW);
@@ -19,7 +17,7 @@ public class Main {
         manager.add(task2);
 
         Epic epic1 = new Epic("Переезд", "Переезд на новую квартиру");
-        manager.add(epic1);
+        epic1 = manager.add(epic1);
         SubTask subtask1 = new SubTask("Собрать вещи", "Целый день собирать вещи", epic1.getId());
         SubTask subtask2 = new SubTask("Погладить кота", "Целый день гладить кота", epic1.getId());
         subtask1.setStatus(TaskStatus.NEW);
@@ -28,7 +26,7 @@ public class Main {
         manager.add(subtask2);
 
         Epic epic2 = new Epic("Погрузиться в Звездные войны","Посмотреть фильмы и  сериалы Звездных войн");
-        manager.add(epic2);
+        epic2 = manager.add(epic2);
         SubTask subtask3 = new SubTask("Посмотреть Звездные войны", "Посмотреть Звездные войны Изгой",
                 epic2.getId());
         subtask3.setStatus(TaskStatus.NEW);
@@ -42,6 +40,7 @@ public class Main {
         subtask1.setStatus(TaskStatus.DONE);
         manager.updateTask(task1.getId(), task1);
         manager.updateSubtask(subtask1.getId(), subtask1);
+        epic1 = manager.getEpicById(subtask1.getEpicId());
         System.out.println(task1);
         System.out.println(subtask1);
         System.out.println(epic1);
