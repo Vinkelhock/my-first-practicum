@@ -1,5 +1,5 @@
 import model.enums.TaskStatus;
-import manager.TaskManager;
+import manager.InMemoryTaskManager;
 import model.Task;
 import model.Epic;
 import model.SubTask;
@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        TaskManager manager = new manager.TaskManager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
         Task task1 = new Task("Сходить в магазин", "купить много продуктов");
         Task task2 = new Task("Помыть кота", "приготовить набор первой помощи");
         task1.setStatus(TaskStatus.NEW);
@@ -45,7 +45,11 @@ public class Main {
         System.out.println(subtask1);
         System.out.println(epic1);
 
-        manager.removeTaskById(task2.getId());
-        manager.removeEpicById(epic2.getId());
+        //manager.removeTaskById(task2.getId());
+       // manager.removeEpicById(epic2.getId());
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
     }
 }
