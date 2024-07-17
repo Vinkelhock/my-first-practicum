@@ -45,8 +45,6 @@ public class Main {
         System.out.println(subtask1);
         System.out.println(epic1);
 
-        //manager.removeTaskById(task2.getId());
-       // manager.removeEpicById(epic2.getId());
         System.out.println("История:");
         for (Task task : manager.getHistory()) {
             System.out.println(task);
