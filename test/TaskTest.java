@@ -39,11 +39,11 @@ class TaskTest {
         Task task1 = new Task("Task1", "Description1");
         Task task2 = new Task("Task1", "Description1");
 
-        taskManager.add(task1);
-        taskManager.add(task2);
+        taskManager.addNewTask(task1);
+        taskManager.addNewTask(task2);
 
-        Assertions.assertEquals(task1, taskManager.getTaskById(task1.getId()));
-        Assertions.assertEquals(task2, taskManager.getTaskById(task2.getId()));
+        Assertions.assertEquals(task1, taskManager.getTask(task1.getId()));
+        Assertions.assertEquals(task2, taskManager.getTask(task2.getId()));
     }
 
     @Test
@@ -53,9 +53,9 @@ class TaskTest {
         Task task6 = new Task("Task6", "Description6");
         Task task7 = new Task("Task7", "Description7");
 
-        taskManager.add(task5);
-        taskManager.add(task6);
-        taskManager.add(task7);
+        taskManager.addNewTask(task5);
+        taskManager.addNewTask(task6);
+        taskManager.addNewTask(task7);
 
         Assertions.assertNotEquals(task5.getId(), task7.getId());
         Assertions.assertNotEquals(task5.getId(), task6.getId());
@@ -66,9 +66,9 @@ class TaskTest {
         TaskManager taskManager = new Managers().getDefault();
         Task task5 = new Task("Task5", "Description5");
 
-        taskManager.add(task5);
+        taskManager.addNewTask(task5);
 
-        Task updatedTask = taskManager.getTaskById(task5.getId());
+        Task updatedTask = taskManager.getTask(task5.getId());
 
         Assertions.assertEquals(task5.getDescription(), updatedTask.getDescription());
         Assertions.assertEquals(task5.getStatus(), updatedTask.getStatus());
@@ -82,13 +82,13 @@ class TaskTest {
         Task task2 = new Task("Task2", "Description2");
         Task task3 = new Task("Task3", "Description3");
 
-        taskManager.add(task1);
-        taskManager.add(task2);
-        taskManager.add(task3);
+        taskManager.addNewTask(task1);
+        taskManager.addNewTask(task2);
+        taskManager.addNewTask(task3);
 
         taskManager.removeAllTasks();
 
-        Assertions.assertEquals(0, taskManager.allTasks().size());
+        Assertions.assertEquals(0, taskManager.getTasks().size());
     }
 
     @Test
@@ -99,13 +99,13 @@ class TaskTest {
         Epic epic2 = new Epic("Epic2", "Description2");
         Epic epic3 = new Epic("Epic3", "Description3");
 
-        taskManager.add(epic1);
-        taskManager.add(epic2);
-        taskManager.add(epic3);
+        taskManager.addNewEpic(epic1);
+        taskManager.addNewEpic(epic2);
+        taskManager.addNewEpic(epic3);
 
         taskManager.removeAllEpics();
 
-        Assertions.assertEquals(0, taskManager.allEpics().size());
+        Assertions.assertEquals(0, taskManager.getEpics().size());
     }
 
 
