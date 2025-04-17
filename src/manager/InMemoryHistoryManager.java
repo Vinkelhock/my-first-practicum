@@ -13,22 +13,22 @@ public class InMemoryHistoryManager implements HistoryManager {
     private int size = 0;
 
     //Внутренний класс-узел двухсвязного списка
-    public static class Node<Task> {
-        private Task data;
-        private Node<Task> next;
-        private Node<Task> prev;
+    public static class Node<T> {
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
 
-        public Node(Node<Task> prev, Task data, Node<Task> next) {
+        public Node(Node<T> prev, T data, Node<T> next) {
             this.data = data;
             this.next = next;
             this.prev = prev;
         }
 
-        public Task getData() {
+        public T getData() {
             return this.data;
         }
 
-        public Node<Task> getNext() {
+        public Node<T> getNext() {
             return this.next;
         }
 
