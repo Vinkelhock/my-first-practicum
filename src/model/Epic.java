@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import model.enums.TaskStatus;
+import manager.InMemoryTaskManager;
 
 public class Epic extends Task {
     private ArrayList<Integer> listOfSubtask;

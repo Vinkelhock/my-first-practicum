@@ -66,4 +66,6 @@ public interface TaskManager {
 
     //Получение списка всех подзадач определенного эпика
     ArrayList<String> subtasksByEpic(int id);
+
+    boolean addSubtask(Epic epic1, int epic1Id);
 }

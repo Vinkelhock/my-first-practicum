@@ -115,11 +115,42 @@ public class InMemoryTaskManager implements TaskManager {
     public int addNewSubtask(SubTask subtask) {
         int id = generateId();
         subtask.setId(id);
-        subtasks.put(subtask.getId(), subtask);
+
+        if (!epics.containsKey(subtask.getEpicId())) {
+            if (subtasks.containsKey(subtask.getEpicId())) {
+                System.out.println("Подзадача не может быть эпиком");
+                return -3;
+            }
+        }
+
         Epic epic = epics.get(subtask.getEpicId());
-        epic.getListOfSubtask().add(subtask.getId());
+
+        if (epic == null) {
+            //System.out.println("Эпик с id " + subtask.getEpicId() + " не найден.");
+            return -1;
+        }
+
+        subtasks.put(subtask.getId(), subtask);
+
+        if (!addSubtask(epic, subtask.getId())) {
+            return -2;
+        }
+
         checkStatus(epic);
         return id;
+    }
+
+    public boolean addSubtask(Epic epic, int id) {
+        ArrayList<Integer> listIdsOfSubtask = new ArrayList<>();
+        listIdsOfSubtask = epic.getListOfSubtask();
+        if (!subtasks.containsKey(id)) {
+            System.out.println("В список подзадач эпика можно добавить только подзадачу");
+            return false;
+        } else {
+            epic.addSubtask(id);
+        }
+
+        return true;
     }
 
     //Обновление задачи

@@ -21,16 +21,16 @@ public class Main {
         manager.addNewSubtask(subtask1);
         manager.addNewSubtask(subtask2);
 
-        Epic epic2 = new Epic("Погрузиться в Звездные войны","Посмотреть фильмы и  сериалы Звездных войн");
+        Epic epic2 = new Epic("Погрузиться в Звездные войны", "Посмотреть фильмы и  сериалы Звездных войн");
         int epic2Id = manager.addNewEpic(epic2);
         SubTask subtask3 = new SubTask("Посмотреть Звездные войны Изгой",
-                                       "Приготовить закуску, напитки, посмотреть Звездные войны Изгой",
-                                        epic2Id,
-                                        TaskStatus.NEW);
+                "Приготовить закуску, напитки, посмотреть Звездные войны Изгой",
+                epic2Id,
+                TaskStatus.NEW);
         SubTask subtask4 = new SubTask("Начать смотреть сериал Андор",
-                                       "Приготовить закуску, кофе, выключить телефон, нечать смотреть",
-                                        epic2Id,
-                                        TaskStatus.NEW);
+                "Приготовить закуску, кофе, выключить телефон, нечать смотреть",
+                epic2Id,
+                TaskStatus.NEW);
         manager.addNewSubtask(subtask3);
         manager.addNewSubtask(subtask4);
 
