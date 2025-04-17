@@ -10,10 +10,6 @@ import model.enums.TaskStatus;
 
 import java.util.ArrayList;
 
-import manager.Managers;
-import manager.TaskManager;
-import manager.InMemoryTaskManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
