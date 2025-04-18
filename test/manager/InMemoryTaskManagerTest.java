@@ -41,7 +41,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void testEqualInheritorsOfTask() {
+    void equalInheritorsOfTask() {
         Epic epic1 = new Epic("Эпичный эпик", "Описание 1");
         int epic1Id = taskManager.addNewEpic(epic1);
         SubTask subtask1 = new SubTask("Сходить в магазин", "купить много продуктов", epic1Id, TaskStatus.NEW);
@@ -63,7 +63,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldNotAllowEpicToBeItsOwnSubtask() {
+    void epicIsSubtaskForItself() {
         Epic epic1 = new Epic("Неправильный эпик", "Описание 1");
         int epic1Id = taskManager.addNewEpic(epic1);
         boolean result = taskManager.addSubtask(epic1, epic1Id);
@@ -72,7 +72,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldNotAllowSubtaskToBeItsOwnEpic() {
+    void subtaskIsEpicForItself() {
         Epic epic2 = new Epic("Второй эпик", "Описание 2");
         int epic2Id = taskManager.addNewEpic(epic2);
         System.out.println(taskManager.getEpics());
@@ -91,15 +91,15 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldNotAllowSubtaskWithInvalidEpicId() {
-        SubTask subtask = new SubTask("Сабтаска", "Описание", 999, TaskStatus.NEW);
+    void subtaskWithInvalidEpicId() {
+        SubTask subtask = new SubTask("Подзадача", "Описание", 999, TaskStatus.NEW);
         int result = taskManager.addNewSubtask(subtask);
 
         assertEquals(-1, result, "Подзадача с несуществующим эпиком не должна добавляться.");
     }
 
     @Test
-    void shouldNotConflictBetweenManuallySetAndGeneratedIds() {
+    void conflictBetweenIdsTest() {
         Task task1 = new Task("Первая", "Описание 1", TaskStatus.NEW);
         int taskId1 = taskManager.addNewTask(task1);
 
@@ -113,7 +113,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void testAddAndGetTasks() {
+    void addAndGetTasks() {
         Task task1 = new Task("Первая", "Описание 1", TaskStatus.NEW);
         final int taskId = taskManager.addNewTask(task1);
         final Task savedTask = taskManager.getTask(taskId);
@@ -134,7 +134,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void testAddAndGetEpics() {
+    void addAndGetEpics() {
         Epic epic1 = new Epic("Первый эпик", "Описание 1");
         int epic1Id = taskManager.addNewEpic(epic1);
         Epic savedEpic = taskManager.getEpic(epic1Id);
@@ -153,7 +153,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void testAddAndGetSubtasks() {
+    void addAndGetSubtasks() {
         Epic epic1 = new Epic("Первый эпик", "Описание 1");
         int epic1Id = taskManager.addNewEpic(epic1);
         Epic savedEpic = taskManager.getEpic(epic1Id);
