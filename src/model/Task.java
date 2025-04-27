@@ -1,6 +1,7 @@
 package model;
 
 import model.enums.TaskStatus;
+import model.enums.TaskTypes;
 
 import java.util.Objects;
 
@@ -43,12 +44,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{\n" +
-                " title='" + title + "',\n" +
-                " description='" + description + "',\n" +
-                " id=" + id + ",\n" +
-                " status=" + status + "\n" +
-                "}";
+        return String.format("%d,%s,%s,%s,%s",
+                getId(), TaskTypes.TASK, getTitle(), getStatus(), getDescription());
     }
 
     public String getTitle() {
