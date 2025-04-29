@@ -11,13 +11,13 @@ public interface TaskManager {
     List<Task> getHistory();
 
     //Получение списка всех задач
-    ArrayList<Task> allTasks();
+    ArrayList<Task> getTasks();
 
     //Получение списка всех эпиков
-    ArrayList<Epic> allEpics();
+    ArrayList<Epic> getEpics();
 
     //Получение списка всех подзадач эпиков
-    ArrayList<SubTask> allSubtasks();
+    ArrayList<SubTask> getSubtasks();
 
     //Удаление всех задач
     void removeAllTasks();
@@ -29,22 +29,22 @@ public interface TaskManager {
     void removeAllSubTasks();
 
     //Получение задачи по идентификатору.
-    Task getTaskById(int id);
+    Task getTask(int id);
 
     //Получение эпика по идентификатору.
-    Epic getEpicById(int id);
+    Epic getEpic(int id);
 
     //Получение по подзадачи эпика по идентификатору.
-    SubTask getSubtaskById(int id);
+    SubTask getSubtask(int id);
 
     //Создание задачи Task
-    void add(Task task);
+    int addNewTask(Task task);
 
     //Создание задачи Epic
-    Epic add(Epic epic);
+    int addNewEpic(Epic epic);
 
     //Создание подзадачи
-    void add(SubTask subtask);
+    int addNewSubtask(SubTask subtask);
 
     //Обновление задачи
     void updateTask(int id, Task task);
@@ -66,4 +66,6 @@ public interface TaskManager {
 
     //Получение списка всех подзадач определенного эпика
     ArrayList<String> subtasksByEpic(int id);
+
+    boolean addSubtask(Epic epic1, int epic1Id);
 }

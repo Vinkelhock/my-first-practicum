@@ -1,26 +1,103 @@
 package manager;
 
 import model.Task;
-import model.Epic;
-import model.SubTask;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashMap;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final ArrayList<Task> history = new ArrayList<>();
+    private HashMap<Integer, Node> historyList = new HashMap<>();
+    private Node<Task> head;
+    private Node<Task> tail;
+    private int size = 0;
 
+    //Внутренний класс-узел двухсвязного списка
+    public static class Node<T> {
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
+
+        public Node(Node<T> prev, T data, Node<T> next) {
+            this.data = data;
+            this.next = next;
+            this.prev = prev;
+        }
+
+        public T getData() {
+            return this.data;
+        }
+
+        public Node<T> getNext() {
+            return this.next;
+        }
+
+    }
+
+    //Добавить узел в конец двухсвязного списка
+    public Node<Task> linkLast(Task task) {
+        final Node<Task> oldTail = tail;
+        final Node<Task> newNode = new Node<>(oldTail, task, null);
+        this.tail = newNode;
+        if (oldTail == null)
+            this.head = newNode;
+        else
+            oldTail.next = newNode;
+        this.size++;
+        return this.tail;
+    }
+
+    //Добавить узел в связный список и хешмап
     @Override
     public void add(Task task) {
-        if (history.size() >= 10) {
-            history.remove(0);
+        if (historyList.containsKey(task.getId())) {
+            removeNode(historyList.get(task.getId()));
         }
-        history.add(task);
+        Node<Task> node = linkLast(task);
+        historyList.put(task.getId(), node);
+    }
+
+    //Удалить задачу из списка просмотров
+    @Override
+    public void remove(int id) {
+        if (historyList.containsKey(id)) {
+            removeNode(historyList.get(id));
+            historyList.remove(id);
+        }
     }
 
     @Override
-    public List<Task> getHistory() {
-        System.out.println(history);
-        return history;
+    public ArrayList<Task> getHistory() {
+        ArrayList<Task> tasks = getTasks();
+        return tasks;
+    }
+
+    //Собрать содержимое двухсвязного списка в ArrayList
+    public ArrayList<Task> getTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        Node<Task> currentNode = head;
+        while (currentNode != null) {
+            tasks.add(currentNode.getData());
+            currentNode = currentNode.getNext();
+        }
+        return tasks;
+    }
+
+    //Удалить узел из связного списка
+    public void removeNode(Node node) {
+        Node<Task> prevNode = node.prev;//ссылка на предыдущий узел
+        Node<Task> nextNode = node.next;//ссылка на следующий узел
+        if (prevNode != null) {
+            prevNode.next = nextNode;
+        } else {
+            this.head = nextNode;
+        }
+        if (nextNode != null) {
+            nextNode.prev = prevNode;
+        } else {
+            this.tail = prevNode;
+        }
+        node.next = null;
+        node.prev = null;
     }
 }
