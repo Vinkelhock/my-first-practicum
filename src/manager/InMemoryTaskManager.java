@@ -214,7 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
         return listOfSubtasks;
     }
 
-    private Epic checkStatus(Epic epic) {
+    protected Epic checkStatus(Epic epic) {
         boolean checkNew = true;
         boolean checkDone = true;
         for (Integer id : epic.getListOfSubtask()) {

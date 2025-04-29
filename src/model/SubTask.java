@@ -6,7 +6,7 @@ import model.enums.TaskTypes;
 public class SubTask extends Task {
     private int epicId;
 
-    public SubTask( String title, String description, int epicId, TaskStatus status) {
+    public SubTask(String title, String description, int epicId, TaskStatus status) {
         super(title, description, status);
         this.epicId = epicId;
     }
