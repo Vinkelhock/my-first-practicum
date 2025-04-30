@@ -119,7 +119,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 createSubtask(fields);
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + taskTypes);
+                throw new IllegalStateException(String.format("Unexpected value: %s", taskTypes));
         }
     }
 
