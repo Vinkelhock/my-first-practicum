@@ -13,9 +13,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     private int nextId = 0;
 
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private final HashMap<Integer, SubTask> subtasks = new HashMap<>();
+    protected final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected final HashMap<Integer, SubTask> subtasks = new HashMap<>();
     HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -23,7 +23,7 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-    private Integer generateId() {
+    protected Integer generateId() {
         return nextId++;
     }
 
@@ -116,6 +116,7 @@ public class InMemoryTaskManager implements TaskManager {
         int id = generateId();
         subtask.setId(id);
 
+        //Если EpicId подзадачи не содержится в хешмапе эпиков, но есть в хешмапе подзадач
         if (!epics.containsKey(subtask.getEpicId())) {
             if (subtasks.containsKey(subtask.getEpicId())) {
                 System.out.println("Подзадача не может быть эпиком");
@@ -132,6 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         subtasks.put(subtask.getId(), subtask);
 
+        //Добавляем подзадачу к списку подзадач эпика, и попутно проверяем что это не эпик
         if (!addSubtask(epic, subtask.getId())) {
             return -2;
         }
@@ -140,17 +142,15 @@ public class InMemoryTaskManager implements TaskManager {
         return id;
     }
 
+    // проверить что подзадача не эпик
     public boolean addSubtask(Epic epic, int id) {
-        ArrayList<Integer> listIdsOfSubtask = new ArrayList<>();
-        listIdsOfSubtask = epic.getListOfSubtask();
         if (!subtasks.containsKey(id)) {
             System.out.println("В список подзадач эпика можно добавить только подзадачу");
             return false;
         } else {
             epic.addSubtask(id);
+            return true;
         }
-
-        return true;
     }
 
     //Обновление задачи
@@ -214,7 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
         return listOfSubtasks;
     }
 
-    private Epic checkStatus(Epic epic) {
+    protected Epic checkStatus(Epic epic) {
         boolean checkNew = true;
         boolean checkDone = true;
         for (Integer id : epic.getListOfSubtask()) {

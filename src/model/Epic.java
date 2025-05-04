@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import model.enums.TaskStatus;
+import model.enums.TaskTypes;
 
 public class Epic extends Task {
     private ArrayList<Integer> listOfSubtask;
@@ -27,13 +28,8 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{\n" +
-                " title='" + getTitle() + "',\n" +
-                " description='" + getDescription() + "',\n" +
-                " id=" + getId() + ",\n" +
-                " status=" + getStatus() + ",\n" +
-                " listOfSubtask=" + listOfSubtask + ",\n" +
-                "}";
+        return String.format("%d,%s,%s,%s,%s",
+                getId(), TaskTypes.EPIC, getTitle(), getStatus(), getDescription());
     }
 
 }
