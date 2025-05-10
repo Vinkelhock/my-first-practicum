@@ -11,6 +11,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import model.Epic;
@@ -129,8 +131,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         TaskStatus status = TaskStatus.valueOf(fields[3]);
         String description = fields[4];
         int idEpic = Integer.parseInt(fields[5]);
+        Duration duration = Duration.ofMinutes(Long.parseLong(fields[6]));
+        LocalDateTime startTime = null;
+        if (fields[7] != null) startTime = LocalDateTime.parse(fields[7]);
+
         SubTask subtask = new SubTask(name, description, idEpic, status);
         subtask.setId(id);
+        subtask.setDuration(duration);
+        subtask.setStartTime(startTime);
+
         //Создали новую задачу - увеличили счетчик
         super.generateId();
         subtasks.put(id, subtask);
@@ -145,8 +154,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         TaskStatus status = TaskStatus.valueOf(fields[3]);
         String description = fields[4];
         ArrayList<Integer> listOfSubtask = new ArrayList<>();
+        Duration duration = Duration.ofMinutes(Long.parseLong(fields[5]));
+        LocalDateTime startTime = null;
+        if (fields[6] != null) startTime = LocalDateTime.parse(fields[6]);
+        LocalDateTime endTime = null;
+        if (fields[7] != null) endTime = LocalDateTime.parse(fields[7]);
 
         Epic epic = new Epic(name, description, id, status, listOfSubtask);
+        epic.setDuration(duration);
+        epic.setStartTime(startTime);
+        epic.setEndTime(endTime);
+
         //Создали новую задачу - увеличили счетчик
         super.generateId();
         epics.put(id, epic);
@@ -157,7 +175,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = fields[2];
         TaskStatus status = TaskStatus.valueOf(fields[3]);
         String description = fields[4];
+        Duration duration = Duration.ofMinutes(Long.parseLong(fields[5]));
+        LocalDateTime startTime = null;
+        if (fields[6] != null) startTime = LocalDateTime.parse(fields[6]);
+
         Task task = new Task(name, description, id, status);
+        task.setDuration(duration);
+        task.setStartTime(startTime);
+
         //Создали новую задачу - увеличили счетчик
         super.generateId();
         tasks.put(id, task);

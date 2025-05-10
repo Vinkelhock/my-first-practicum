@@ -6,6 +6,7 @@ import model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     List<Task> getHistory();
@@ -65,7 +66,9 @@ public interface TaskManager {
     void removeSubtaskById(int id);
 
     //Получение списка всех подзадач определенного эпика
-    ArrayList<String> subtasksByEpic(int id);
+    List<String> getEpicSubtasks(int EpicId);
 
     boolean addSubtask(Epic epic1, int epic1Id);
+
+    TreeSet getPrioritizedTasks();
 }
