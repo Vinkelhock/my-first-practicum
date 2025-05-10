@@ -66,7 +66,7 @@ public interface TaskManager {
     void removeSubtaskById(int id);
 
     //Получение списка всех подзадач определенного эпика
-    List<String> getEpicSubtasks(int EpicId);
+    List<String> getEpicSubtasks(int epicId);
 
     boolean addSubtask(Epic epic1, int epic1Id);
 
