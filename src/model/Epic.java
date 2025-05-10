@@ -42,9 +42,7 @@ public class Epic extends Task {
     public String toString() {
         return String.format("%d,%s,%s,%s,%s,%d,%s,%s",
                 getId(), TaskTypes.EPIC, getTitle(), getStatus(), getDescription(),
-                getDuration().toMinutes(),
-                getStartTime().toString(),
-                getEndTime().toString()
+                getDuration().toMinutes(), getStartTime().toString(), getEndTime().toString()
         );
     }
 
