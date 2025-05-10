@@ -71,19 +71,19 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public boolean checkList(Task newTask) {
-        boolean b = false;
+        boolean isIntersection = false;
         try {
             for (Task task : this.prioritizedTasks) {
                 if (intersectionCheck(task, newTask)) {
-                    b = true;
+                    isIntersection = true;
                     throw new IntersectionException(newTask);
                 }
             }
-            return b;
+            return isIntersection;
         } catch (IntersectionException exception) {
             System.out.println(exception.getDetailMessage());
         }
-        return b;
+        return isIntersection;
     }
 
     protected Integer generateId() {

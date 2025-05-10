@@ -108,32 +108,32 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     void fromString(String value) {
-        String[] fields = value.split(",");
-        TaskTypes taskTypes = TaskTypes.valueOf(fields[1]);
+        String[] lineFromFile = value.split(",");
+        TaskTypes taskTypes = TaskTypes.valueOf(lineFromFile[1]);
         switch (taskTypes) {
             case TaskTypes.TASK:
-                createTask(fields);
+                createTask(lineFromFile);
                 break;
             case TaskTypes.EPIC:
-                createEpic(fields);
+                createEpic(lineFromFile);
                 break;
             case TaskTypes.SUBTASK:
-                createSubtask(fields);
+                createSubtask(lineFromFile);
                 break;
             default:
                 throw new IllegalStateException(String.format("Unexpected value: %s", taskTypes));
         }
     }
 
-    private void createSubtask(String[] fields) {
-        int id = Integer.parseInt(fields[0]);
-        String name = fields[2];
-        TaskStatus status = TaskStatus.valueOf(fields[3]);
-        String description = fields[4];
-        int idEpic = Integer.parseInt(fields[5]);
-        Duration duration = Duration.ofMinutes(Long.parseLong(fields[6]));
+    private void createSubtask(String[] subtaskLine) {
+        int id = Integer.parseInt(subtaskLine[0]);
+        String name = subtaskLine[2];
+        TaskStatus status = TaskStatus.valueOf(subtaskLine[3]);
+        String description = subtaskLine[4];
+        int idEpic = Integer.parseInt(subtaskLine[5]);
+        Duration duration = Duration.ofMinutes(Long.parseLong(subtaskLine[6]));
         LocalDateTime startTime = null;
-        if (fields[7] != null) startTime = LocalDateTime.parse(fields[7]);
+        if (subtaskLine[7] != null) startTime = LocalDateTime.parse(subtaskLine[7]);
 
         SubTask subtask = new SubTask(name, description, idEpic, status);
         subtask.setId(id);
@@ -148,17 +148,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         epic.addSubtask(id);
     }
 
-    private void createEpic(String[] fields) {
-        int id = Integer.parseInt(fields[0]);
-        String name = fields[2];
-        TaskStatus status = TaskStatus.valueOf(fields[3]);
-        String description = fields[4];
+    private void createEpic(String[] epicLine) {
+        int id = Integer.parseInt(epicLine[0]);
+        String name = epicLine[2];
+        TaskStatus status = TaskStatus.valueOf(epicLine[3]);
+        String description = epicLine[4];
         ArrayList<Integer> listOfSubtask = new ArrayList<>();
-        Duration duration = Duration.ofMinutes(Long.parseLong(fields[5]));
+        Duration duration = Duration.ofMinutes(Long.parseLong(epicLine[5]));
         LocalDateTime startTime = null;
-        if (fields[6] != null) startTime = LocalDateTime.parse(fields[6]);
+        if (epicLine[6] != null) startTime = LocalDateTime.parse(epicLine[6]);
         LocalDateTime endTime = null;
-        if (fields[7] != null) endTime = LocalDateTime.parse(fields[7]);
+        if (epicLine[7] != null) endTime = LocalDateTime.parse(epicLine[7]);
 
         Epic epic = new Epic(name, description, id, status, listOfSubtask);
         epic.setDuration(duration);
@@ -170,14 +170,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         epics.put(id, epic);
     }
 
-    private void createTask(String[] fields) {
-        int id = Integer.parseInt(fields[0]);
-        String name = fields[2];
-        TaskStatus status = TaskStatus.valueOf(fields[3]);
-        String description = fields[4];
-        Duration duration = Duration.ofMinutes(Long.parseLong(fields[5]));
+    private void createTask(String[] taskLine) {
+        int id = Integer.parseInt(taskLine[0]);
+        String name = taskLine[2];
+        TaskStatus status = TaskStatus.valueOf(taskLine[3]);
+        String description = taskLine[4];
+        Duration duration = Duration.ofMinutes(Long.parseLong(taskLine[5]));
         LocalDateTime startTime = null;
-        if (fields[6] != null) startTime = LocalDateTime.parse(fields[6]);
+        if (taskLine[6] != null) startTime = LocalDateTime.parse(taskLine[6]);
 
         Task task = new Task(name, description, id, status);
         task.setDuration(duration);
