@@ -8,18 +8,25 @@ import model.SubTask;
 import model.Task;
 import model.enums.TaskStatus;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.TreeSet;
 
-class InMemoryTaskManagerTest {
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     private TaskManager taskManager;
 
     @BeforeEach
-    void beforeEach() {
+    void setUp() {
+        Path path = Paths.get("autosave7.csv");
+        super.manager = new FileBackedTaskManager(path);
         taskManager = Managers.getDefault();
     }
 
@@ -38,6 +45,49 @@ class InMemoryTaskManagerTest {
         assertNotNull(tasks, "Задачи не возвращаются.");
         assertEquals(1, tasks.size(), "Неверное количество задач.");
         assertEquals(task, tasks.get(0), "Задачи не совпадают.");
+    }
+
+    @Test
+    void intersectionCheckTest() {
+        Epic epic1 = new Epic("Погрузиться в Звездные войны", "Посмотреть фильмы и  сериалы Звездных войн");
+        int epic1Id = taskManager.addNewEpic(epic1);
+        SubTask subtask1 = new SubTask("Посмотреть Звездные войны Изгой",
+                "Приготовить закуску напитки посмотреть Звездные войны Изгой",
+                epic1Id,
+                TaskStatus.NEW);
+        SubTask subtask2 = new SubTask("Начать смотреть сериал Андор",
+                "Приготовить закуску кофе выключить телефон нечать смотреть",
+                epic1Id,
+                TaskStatus.NEW);
+
+        LocalDateTime izgoiZadacha = LocalDateTime.of(2025, 5, 9, 23, 0);
+        Duration izgoyDuration = Duration.ofMinutes(180);
+        subtask1.setStartTime(izgoiZadacha);
+        subtask1.setDuration(izgoyDuration);
+
+        LocalDateTime andorZadacha = LocalDateTime.of(2025, 5, 10, 20, 0);
+        Duration andorDuration = Duration.ofMinutes(200);
+        subtask2.setStartTime(andorZadacha);
+        subtask1.setDuration(andorDuration);
+
+        taskManager.addNewSubtask(subtask1);
+        taskManager.addNewSubtask(subtask2);
+
+        TreeSet set = taskManager.getPrioritizedTasks();
+        assertEquals(2, set.size(), "Должно быть две задачи");
+
+        SubTask subtask3 = new SubTask("Начать смотреть сериал Светлячок",
+                "Приготовить закуску кофе нечать смотреть Светлячок",
+                epic1Id,
+                TaskStatus.NEW);
+        LocalDateTime fireFlyZadacha = LocalDateTime.of(2025, 5, 9, 23, 50);
+        Duration fireFlyDuration = Duration.ofMinutes(120);
+        subtask3.setStartTime(fireFlyZadacha);
+        subtask3.setDuration(fireFlyDuration);
+        taskManager.addNewSubtask(subtask3);
+
+        set = taskManager.getPrioritizedTasks();
+        assertEquals(2, set.size(), "Должно быть две задачи. Третья не должна добавиться");
     }
 
     @Test
@@ -191,5 +241,4 @@ class InMemoryTaskManagerTest {
         assertEquals(subtask1.getTitle(), subtasks.get(0).getTitle(),
                 "Названия первой саб-задачи не совпадают.");
     }
-
 }

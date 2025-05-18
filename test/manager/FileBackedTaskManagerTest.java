@@ -4,6 +4,7 @@ import model.Epic;
 import model.SubTask;
 import model.Task;
 import model.enums.TaskStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -12,7 +13,15 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
+    Path path = Paths.get("autosave7.csv");
+
+    @BeforeEach
+    void setUp() {
+        Path path = Paths.get("autosave7.csv");
+        super.manager = new FileBackedTaskManager(path);
+    }
+
     @Test
     void saveAndLoadEmptyFile() {
         Path path = Paths.get("empty.csv");
@@ -96,10 +105,14 @@ class FileBackedTaskManagerTest {
         assertEquals(task1.getTitle(), savedTask1.getTitle(), "Заголовки не совпадают");
         assertEquals(task1.getDescription(), savedTask1.getDescription(), "Описания не совпадают");
         assertEquals(task1.getStatus(), savedTask1.getStatus(), "Статусы не совпадают");
+        assertEquals(task1.getDuration(), savedTask1.getDuration(), "Продолжительность задачи не совпадает");
+        assertEquals(task1.getStartTime(), savedTask1.getStartTime(), "Время начала задачи не совпадает");
 
         assertEquals(task2.getTitle(), savedTask2.getTitle(), "Заголовки не совпадают");
         assertEquals(task2.getDescription(), savedTask2.getDescription(), "Описания не совпадают");
         assertEquals(task2.getStatus(), savedTask2.getStatus(), "Статусы не совпадают");
+        assertEquals(task2.getDuration(), savedTask2.getDuration(), "Продолжительность задачи не совпадает");
+        assertEquals(task2.getStartTime(), savedTask2.getStartTime(), "Время начала задачи не совпадает");
 
         assertEquals(epic1.getTitle(), savedEpic1.getTitle(), "Заголовки не совпадают");
         assertEquals(epic1.getDescription(), savedEpic1.getDescription(), "Описания не совпадают");
@@ -114,4 +127,6 @@ class FileBackedTaskManagerTest {
         assertEquals(subtask2.getStatus(), savedSubtask2.getStatus(), "Статусы не совпадают");
         assertEquals(subtask2.getEpicId(), savedSubtask2.getEpicId(), "Id эпика не совпадают");
     }
+
+
 }
