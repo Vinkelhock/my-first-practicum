@@ -79,7 +79,6 @@ public class PrioritizedHandlerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        //TreeSet<Task> tasksList = gson.fromJson(response.body(), new TaskListTypeToken().getType());
         List<Task> tasksList = gson.fromJson(response.body(), new TaskListTypeToken().getType());
         client.close();
         assertEquals(200, response.statusCode());

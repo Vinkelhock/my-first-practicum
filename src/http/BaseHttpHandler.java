@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 public class BaseHttpHandler {
     protected static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    protected static final String VALUE = "application/json;charset=utf-8";
     protected Gson gson;
     protected TaskManager taskManager;
 
@@ -20,7 +21,7 @@ public class BaseHttpHandler {
 
     protected void sendText(HttpExchange exchange, String text) throws IOException {
         byte[] resp = text.getBytes(DEFAULT_CHARSET);
-        exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        exchange.getResponseHeaders().add("Content-Type", VALUE);
         exchange.sendResponseHeaders(200, resp.length);
         exchange.getResponseBody().write(resp);
         exchange.close();
@@ -33,7 +34,7 @@ public class BaseHttpHandler {
 
     protected void sendHasInteractions(HttpExchange exchange, String text) throws IOException {
         byte[] resp = text.getBytes(DEFAULT_CHARSET);
-        exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        exchange.getResponseHeaders().add("Content-Type", VALUE);
         exchange.sendResponseHeaders(406, resp.length);
         exchange.getResponseBody().write(resp);
         exchange.close();
@@ -41,7 +42,7 @@ public class BaseHttpHandler {
 
     protected void sendNotFound(HttpExchange exchange) throws IOException {
         byte[] resp = "Not found".getBytes(DEFAULT_CHARSET);
-        exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        exchange.getResponseHeaders().add("Content-Type", VALUE);
         exchange.sendResponseHeaders(404, resp.length);
         exchange.getResponseBody().write(resp);
         exchange.close();

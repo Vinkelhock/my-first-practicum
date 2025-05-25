@@ -69,14 +69,14 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         InputStream inputStream = exchange.getRequestBody();
         String jsonBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
         Task task = gson.fromJson(jsonBody, Task.class);
-        System.out.println("Получили задачу " + task.getTitle() + " - добавляем ее в список задач");
+        System.out.printf("Получили задачу %s - добавляем ее в список задач", task.getTitle());
         try {
             int idTask = taskManager.addNewTask(task);
             String jsonString = gson.toJson(idTask);
             sendText(exchange, jsonString);
         } catch (IntersectionException exception) {
             String message = "Задача пересекается по времени выполнения с другой задачей";
-            System.out.println("В консоли " + message);
+            System.out.printf("В консоли %s", message);
             sendHasInteractions(exchange, message);
         }
     }
@@ -101,7 +101,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private void handleDeleteTaskById(HttpExchange exchange, int id) throws IOException {
         System.out.println("Удаляем задачу по id");
         taskManager.removeTaskById(id);
-        String jsonString = gson.toJson("Удаляем задачу по id = " + id);
+        String jsonString = gson.toJson(String.format("Удаляем задачу по id = %d", id));
         sendText(exchange, jsonString);
     }
 }

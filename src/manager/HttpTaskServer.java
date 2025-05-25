@@ -39,12 +39,12 @@ public class HttpTaskServer {
 
     public void start() {
         httpServer.start();
-        System.out.println("HTTP-сервер запущен на " + PORT + " порту.");
+        System.out.printf("HTTP-сервер запущен на %s порту.", PORT);
     }
 
     public void stop() {
         httpServer.stop(0);
-        System.out.println("HTTP-сервер на порту " + PORT + " остановлен.");
+        System.out.printf("HTTP-сервер на порту %s остановлен.", PORT);
     }
 
     public Gson getGson() {

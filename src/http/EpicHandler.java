@@ -69,7 +69,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         InputStream inputStream = exchange.getRequestBody();
         String jsonBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
         Epic epic = gson.fromJson(jsonBody, Epic.class);
-        System.out.println("Получили задачу " + epic.getTitle() + " - добавляем ее в список задач");
+        System.out.printf("Получили задачу %s - добавляем ее в список задач", epic.getTitle());
         int idEpic = taskManager.addNewEpic(epic);
         String jsonString = gson.toJson(idEpic);
         sendText(exchange, jsonString);
@@ -93,7 +93,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     private void handleDeleteEpicById(HttpExchange exchange, int id) throws IOException {
         System.out.println("Удаляем задачу по id");
         taskManager.removeEpicById(id);
-        String jsonString = gson.toJson("Удалили задачу по id = " + id);
+        String jsonString = gson.toJson(String.format("Удалили задачу по id = %d", id));
         sendText(exchange, jsonString);
     }
 

@@ -69,7 +69,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         InputStream inputStream = exchange.getRequestBody();
         String jsonBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
         SubTask subtask = gson.fromJson(jsonBody, SubTask.class);
-        System.out.println("Получили задачу " + subtask.getTitle() + " - добавляем ее в список задач");
+        System.out.printf("Получили задачу %s - добавляем ее в список задач", subtask.getTitle());
         try {
             int idTask = taskManager.addNewSubtask(subtask);
             String jsonString = gson.toJson(idTask);
@@ -110,7 +110,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     private void handleDeleteSubtaskById(HttpExchange exchange, int id) throws IOException {
         System.out.println("Удаляем задачу по id");
         taskManager.removeSubtaskById(id);
-        String jsonString = gson.toJson("Удалили задачу по id = " + id);
+        String jsonString = gson.toJson(String.format("Удалили задачу по id = %d", id));
         sendText(exchange, jsonString);
     }
 }
