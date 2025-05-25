@@ -38,40 +38,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("Поехали!");
-        Path path = Paths.get("autosave5.csv");
-
-        FileBackedTaskManager manager = new FileBackedTaskManager(path);
-
-        Task task1 = new Task("Сходить в магазин", "купить много продуктов", TaskStatus.NEW);
-        Task task2 = new Task("Помыть кота", "приготовить набор первой помощи", TaskStatus.NEW);
-
-        manager.addNewTask(task1);
-        manager.addNewTask(task2);
-
-        Epic epic2 = new Epic("Погрузиться в Звездные войны", "Посмотреть фильмы и  сериалы Звездных войн");
-        int epic2Id = manager.addNewEpic(epic2);
-        SubTask subtask3 = new SubTask("Посмотреть Звездные войны Изгой",
-                "Приготовить закуску, напитки, посмотреть Звездные войны Изгой",
-                epic2Id,
-                TaskStatus.NEW);
-        SubTask subtask4 = new SubTask("Начать смотреть сериал Андор",
-                "Приготовить закуску, кофе, выключить телефон, нечать смотреть",
-                epic2Id,
-                TaskStatus.NEW);
-        manager.addNewSubtask(subtask3);
-        manager.addNewSubtask(subtask4);
-
-        Task task3 = new Task("Доделать ТЗ", "Сдать ТЗ на проверку", TaskStatus.NEW);
-        Task task4 = new Task("Посмотреть фильм", "RIDDIK", TaskStatus.NEW);
-
-        manager.addNewTask(task3);
-        manager.addNewTask(task4);
-
-        System.out.println(manager.getTasks());
-    }
-
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.autoSaveFile.toFile()))) {
             for (Task task : getTasks()) {

@@ -93,6 +93,7 @@ public class InMemoryTaskManager implements TaskManager {
     //Получение списка всех задач
     @Override
     public ArrayList<Task> getTasks() {
+        System.out.println("Список задач перед отправкой " + tasks);
         return new ArrayList<>(tasks.values());
     }
 
@@ -259,33 +260,45 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление по идентификатору задачи Task
     @Override
     public void removeTaskById(int id) {
+        Task task = tasks.get(id);
         historyManager.remove(id);
         tasks.remove(id);
-        prioritizedTasks.remove(id);
+        prioritizedTasks.remove(task);
     }
 
     //Удаление по идентификатору Эпика
     @Override
     public void removeEpicById(int id) {
-        Epic epic = epics.remove(id);
-        historyManager.remove(id);
+        Epic epic = epics.get(id);
         for (Integer idSubtask : epic.getListOfSubtask()) {
-            subtasks.remove(idSubtask);
-            historyManager.remove(idSubtask);
-            prioritizedTasks.remove(idSubtask);
+            removeSubtaskById(idSubtask);
         }
+        epics.remove(id);
+        historyManager.remove(id);
     }
 
     //Удаление по идентификатору подзадачи
     @Override
     public void removeSubtaskById(int id) {
-        int epicId = subtasks.get(id).getEpicId();
+        SubTask subtask = subtasks.get(id);
+        int epicId = subtask.getEpicId();
         subtasks.remove(id);
         historyManager.remove(id);
-        prioritizedTasks.remove(id);
+        prioritizedTasks.remove(subtask);
         Epic epic = epics.get(epicId);
         ArrayList<Integer> listIdOfSubtask = epic.getListOfSubtask();
-        listIdOfSubtask.remove(id);
+        int idCell = -1;
+
+        System.out.println("ид сабтасок" + listIdOfSubtask);
+
+        for (int i = 0; i < listIdOfSubtask.size(); i++) {
+            int idSubtask = listIdOfSubtask.get(i);
+            if (idSubtask == id) {
+                idCell = i;
+                break;
+            }
+        }
+        listIdOfSubtask.remove(idCell);
         checkStatus(epic);
     }
 
