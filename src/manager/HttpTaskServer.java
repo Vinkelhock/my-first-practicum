@@ -6,18 +6,11 @@ import com.sun.net.httpserver.HttpServer;
 import http.*;
 import http.DurationAdapter;
 import http.LocalDateTimeAdapter;
-import model.Task;
-import model.enums.TaskStatus;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
